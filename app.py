@@ -199,9 +199,10 @@ app.layout = html.Div([
                                         target = '_blank'),
                                  'that if a hotel\'s review score increases by 1 point on a 5-point scale, ',
                                  html.B('the hotel would be able to increase its room prices by 11.2 percent and still maintain the same occupancy or market share.')
-                                ], style = {'font-size': '1vw', 'margin-top':3}),
+                                ], style = {'font-size': '1.2vw', 'margin-top':3}),
                             dcc.Markdown(id='home-2',
-                                         children= 'The first step to increasing profit margins is to understand where you are underperforming. The second step is to understand why. We can do this with numerical and written reviews, respectively. On this page, you can explore two years of compiled reviews that guests from Australia, Canada, New Zealand and the United States wrote for various Hilton Hotels across Europe. If you want to read more on why these particular nationalities have been selected, start on the About tab. Thank you for visiting.', style = {'font-size': '1vw'}
+                                         children= 'The first step to increasing profit margins is to understand where you are underperforming. The second step is to understand why. We can do this with numerical and written reviews, respectively. On this page, you can explore two years of compiled reviews that guests from Australia, Canada, New Zealand and the United States wrote for various Hilton Hotels across Europe. If you want to read more on why these particular nationalities have been selected, start on the About tab. Thank you for visiting.',
+                                         style = {'font-size': '1.2vw'}
                                         )
                             ], style=tab_style, selected_style=tab_selected_style),
                         dcc.Tab(label='About', children=[
@@ -215,7 +216,7 @@ app.layout = html.Div([
                                          ' that helped me begin to answer that question. That dataset contains 515,738 entries and 17 columns of reviews of different hotels ',
                                          html.B('within Europe'),
                                          ' spanning from 2015 to 2017. I chose to focus on Hilton Hotels because they had 35,490 review entries - the highest of any hotel group in the sample. Of those, 1,202 are reviews by Americans, 967 are by Australians, 336 are by Canadians and 196 are by New Zealanders. I focused on English-speaking countries because of the location of these countries relative to Europe and because I believe a common language makes any insights gained from this study more translatable across markets.'
-                                         ], style = {'font-size': '1vw', 'margin-top':3}),
+                                         ], style = {'font-size': '1.2vw', 'margin-top':3}),
                             html.P(
                                 id='about-2',
                                 children=['I ran an A/B experiment on the data with the null hypothesis that there is no significant difference between the average review score in North America (United States and Canada) versus that of English-speaking Oceania (Australia and New Zealand). If you want to see the complete study and its results, you can find it ',
@@ -224,7 +225,7 @@ app.layout = html.Div([
                                        target='_blank'),
                                 '.',
                                 html.B(' Teaser: there is in fact a statistically significant difference between the review scores of two different nationalities.')
-                                         ], style = {'font-size': '1vw'})
+                                         ], style = {'font-size': '1.2vw'})
                             ], style=tab_style, selected_style=tab_selected_style),
                         ], style=tabs_styles),
                     ], style={
