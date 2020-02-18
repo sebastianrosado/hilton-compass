@@ -11,7 +11,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
-app.title = 'Hilton Hotels & Resorts'
+app.title = 'Hilton Compass | Welcome'
 
 colors = {
     'banner': '#18496E',
@@ -19,7 +19,7 @@ colors = {
 }
 
 # API keys and datasets
-reviews = pd.read_csv('https://raw.githubusercontent.com/sebastianrosado/hilton-europe/master/countries_trimmed.csv')
+reviews = pd.read_csv('https://raw.githubusercontent.com/sebastianrosado/hilton-compass/master/countries_trimmed.csv')
 
 reviews = reviews[['review_date', 'hotel_name', 'hotel_address', 'average_score', 'reviewer_nationality', 'reviewer_score', 'negative_review', 'positive_review', 'total_number_of_reviews_reviewer_has_given', 'lat', 'lng']]
 
@@ -144,7 +144,7 @@ app.layout = html.Div([
                         html.A(
                             id = "gh-link",
                             children = "View on GitHub",
-                            href = "https://github.com/sebastianrosado/hilton-compass",
+                            href = "https://github.com/sebastianrosado/hilton-europe/tree/master",
                             target = "_blank",
                             style = {'color': "white",
                                      'text-align': 'center',
@@ -218,7 +218,7 @@ app.layout = html.Div([
                                          ], style = {'font-size': '1vw', 'margin-top':3}),
                             html.P(
                                 id='about-2',
-                                children=['I ran an A/B experiment on the data with the null hypothesis that there is no significant difference between the average review score in North America (United States and Canada) versus that of English-speaking Oceania (Australia and New Zealand). If you want to see the the full study and its results, you can find it ',
+                                children=['I ran an A/B experiment on the data with the null hypothesis that there is no significant difference between the average review score in North America (United States and Canada) versus that of English-speaking Oceania (Australia and New Zealand). If you want to see the complete study and its results, you can find it ',
                                 html.A('here',
                                        href= 'https://github.com/sebastianrosado/hilton-experimental-design/blob/master/Hilton%20Experimental%20Design%20Project.ipynb',
                                        target='_blank'),
@@ -405,7 +405,11 @@ app.layout = html.Div([
                 html.Div(style={'marginLeft':'1.5%','marginRight':'1.5%'},
                      children=[
                          html.P(style={'textAlign':'center','margin':'auto'},
-                                children=["Developed by ",
+                                children=['Full project on ',
+                                          html.A('GitHub',
+                                                href='https://github.com/sebastianrosado/hilton-experimental-design/blob/master/Hilton%20Experimental%20Design%20Project.ipynb',
+                                                target='_blank'),
+                                          " | Developed by ",
                                           html.A('Sebastian Rosado', href='https://www.linkedin.com/in/sebastianrosadom/',
                                           target='_blank'
                                                 )," | Thanks for visiting 👋"
