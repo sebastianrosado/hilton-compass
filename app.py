@@ -86,22 +86,6 @@ fig = go.Figure(go.Scattermapbox(
                         "<extra></extra>", # "<extra></extra>" means we don't display the info in the secondary box, such as trace id.
     ))
 
-fig.update_layout(
-        hovermode='closest',
-        margin={"r":0,"t":0,"l":0,"b":0},
-        mapbox=go.layout.Mapbox(
-            accesstoken= mapbox_access_token,
-            style = 'light',
-            bearing=0,
-            center=go.layout.mapbox.Center(
-                lat= 48.7329446,
-                lon= 5.0126286
-            ),
-            pitch=0,
-            zoom=2.5
-    )
-)
-
 # Tab styles
 
 tabs_styles = {
