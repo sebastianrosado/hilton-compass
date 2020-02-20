@@ -86,6 +86,22 @@ fig = go.Figure(go.Scattermapbox(
                         "<extra></extra>", # "<extra></extra>" means we don't display the info in the secondary box, such as trace id.
     ))
 
+fig.update_layout(
+        hovermode='closest',
+        margin={"r":0,"t":0,"l":0,"b":0},
+        mapbox=go.layout.Mapbox(
+            accesstoken= mapbox_access_token,
+            style = 'light',
+            bearing=0,
+            center=go.layout.mapbox.Center(
+                lat= 48.7329446,
+                lon= 5.0126286
+            ),
+            pitch=0,
+            zoom=2.5
+    )
+)
+
 # Tab styles
 
 tabs_styles = {
@@ -144,7 +160,7 @@ app.layout = html.Div([
                         html.A(
                             id = "gh-link",
                             children = "View on GitHub",
-                            href = "https://github.com/sebastianrosado/hilton-compass",
+                            href = "https://github.com/sebastianrosado/hilton-europe/tree/master",
                             target = "_blank",
                             style = {'color': "white",
                                      'text-align': 'center',
@@ -201,8 +217,7 @@ app.layout = html.Div([
                                  html.B('the hotel would be able to increase its room prices by 11.2 percent and still maintain the same occupancy or market share.')
                                 ], style = {'font-size': '1.2vw', 'margin-top':3}),
                             dcc.Markdown(id='home-2',
-                                         children= 'The first step to increasing profit margins is to understand where you are underperforming. The second step is to understand why. We can do this with numerical and written reviews, respectively. On this page, you can explore two years of compiled reviews that guests from Australia, Canada, New Zealand and the United States wrote for various Hilton Hotels across Europe. If you want to read more on why these particular nationalities have been selected, start on the About tab. Thank you for visiting.',
-                                         style = {'font-size': '1.2vw'}
+                                         children= 'The first step to increasing profit margins is to understand where you are underperforming. The second step is to understand why. We can do this with numerical and written reviews, respectively. On this page, you can explore two years of compiled reviews that guests from Australia, Canada, New Zealand and the United States wrote for various Hilton Hotels across Europe. If you want to read more on why these particular nationalities have been selected, start on the About tab. Thank you for visiting.', style = {'font-size': '1.2vw'}
                                         )
                             ], style=tab_style, selected_style=tab_selected_style),
                         dcc.Tab(label='About', children=[
