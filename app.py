@@ -144,7 +144,7 @@ app.layout = html.Div([
                         html.A(
                             id = "gh-link",
                             children = "View on GitHub",
-                            href = "https://github.com/sebastianrosado/hilton-europe/tree/master",
+                            href = "https://github.com/sebastianrosado/hilton-compass",
                             target = "_blank",
                             style = {'color': "white",
                                      'text-align': 'center',
