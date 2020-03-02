@@ -7,11 +7,15 @@ import plotly.graph_objects as go
 import dash_table
 from dash.dependencies import Input, Output, State
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
+
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
+
+
+# GA tag
 app.index_string = """<!DOCTYPE html>
 <html>
     <head>
@@ -40,12 +44,11 @@ app.index_string = """<!DOCTYPE html>
 </html>"""
 
 
+
+# Tab title
 app.title = 'Hilton Compass | Welcome'
 
-colors = {
-    'banner': '#18496E',
-    'text': '#FFFFFF'
-}
+
 
 # API keys and datasets
 reviews = pd.read_csv('https://raw.githubusercontent.com/sebastianrosado/hilton-compass/master/countries_trimmed.csv')
@@ -54,44 +57,50 @@ reviews = reviews[['review_date', 'hotel_name', 'hotel_address', 'average_score'
 
 reviews.rename(columns={'hotel_name': 'Hotel', 'hotel_address': 'Hotel Address', 'average_score': 'Average Rating', 'review_date': 'Review Date', 'reviewer_nationality': 'Reviewer Nationality', 'reviewer_score': 'Reviewer Score', 'negative_review': 'Negative Review', 'positive_review': 'Positive Review', 'total_number_of_reviews_reviewer_has_given': 'Total User Reviews Submitted', 'lat': 'Lat', 'lng': 'Lon'}, inplace=True)
 
-# String Ratings with 43 rows for Hovertext
+    # String ratings with 43 rows for hovertext
 reviews['Average Rating'] = reviews['Average Rating'].astype(str)
 reduced_df = reviews.drop_duplicates(subset='Hotel', keep="last")
 ratings = reduced_df['Average Rating']
 
-# Hotel names (43 rows) for Hovertext
+    # Hotel names (43 rows) for hovertext
 hotels=reviews['Hotel'].unique()
 
-# Numeric ratings for marker colorscales
+    # Numeric ratings for marker colorscales
 df_copy = reviews.copy()
 df_copy['Average Rating'] = pd.to_numeric(df_copy['Average Rating'])
 reduced_df_copy = df_copy.drop_duplicates(subset='Hotel', keep="last")
 df_copy['id'] = df_copy['Hotel']
 df_copy.set_index('id', inplace=True, drop=False)
 
-# Valuecount dataset for marker size
+    # Valuecount dataset for marker size
 value_counts = df_copy['Hotel'].value_counts()
 value_counts_df = value_counts.rename_axis('Hotel').reset_index(name='Counts')
 
-# Lower Histogram Table
+
+
+# Lower histogram table
 histogram = value_counts_df
 histogram = histogram.merge(reduced_df[['Hotel', 'Average Rating']], how='left', left_on='Hotel', right_on='Hotel')
 
-# Dropdown Dictionary
-city_dict = {'city':['London', 'Paris', 'Barcelona', 'Vienna', 'Milan', 'Amsterdam'],
-                  'lat': [51.525826, 48.8628612, 41.3947688, 48.2205998, 45.4017587, 52.3545362],
-                  'lon':[-0.2381047, 2.1613319, 2.0787277, 16.2399763, 8.8486593, 4.7638774]}
+
+
+# Dropdown dictionary
+city_dict = {'city':['Amsterdam', 'Barcelona', 'London', 'Milan', 'Paris', 'Vienna'],
+                  'lat': [52.3545362, 41.3947688, 51.525826, 45.4017587, 48.8628612, 48.2205998],
+                  'lon':[4.7638774, 2.0787277, -0.2381047, 8.8486593, 2.1613319, 16.2399763]}
 
 city_df = pd.DataFrame(data=city_dict)
 
-# MapBox
 
+
+# MapBox API key
 seabass_custom_style = 'mapbox://styles/sebastianr/ck6cxls3p0s2x1imrh5itji2n'
-
-# Map Layout
 
 mapbox_access_token = 'pk.eyJ1Ijoic2ViYXN0aWFuciIsImEiOiJjazVpNnBnNHIwOWQzM2xzYnNzaXR4bzlnIn0.eZr99XOU5_rYtmZhfLqs6w'
 
+
+
+# Map layout
 fig2 = go.Figure(go.Scattermapbox(
         lat= list(reviews['Lat'].unique()),
         lon= list(reviews['Lon'].unique()),
@@ -131,8 +140,9 @@ fig2.update_layout(
     )
 )
 
-# Tab styles
 
+
+# Tab styles
 tabs_styles = {
     'height': '44px',
     'font-size': '1.2vw'
@@ -158,10 +168,19 @@ tab_selected_style = {
     'padding-bottom': '6px'
 }
 
+# Other styling
 
-# App Layout
+colors = {
+    'banner': '#18496E',
+    'text': '#FFFFFF'
+}
+
+
+
+# App layout
 
 app.layout = html.Div([
+    
 #     Titles
                 html.Div([
                     html.Div([
@@ -230,8 +249,7 @@ app.layout = html.Div([
     
     
 
-    
-# Description
+# Description & About Tabs
                 html.Div([
                     dcc.Tabs([
                         dcc.Tab(label='Home', children=[
@@ -288,12 +306,12 @@ app.layout = html.Div([
                                 id = 'location-dropdown',
                                 options=[
                                     {'label': 'Anywhere', 'value': 'Anywhere'},
-                                    {'label': 'London', 'value': 'London'},
-                                    {'label': 'Paris', 'value': 'Paris'},
+                                    {'label': 'Amsterdam', 'value': 'Amsterdam'},
                                     {'label': 'Barcelona', 'value': 'Barcelona'},
-                                    {'label': 'Vienna', 'value': 'Vienna'},
+                                    {'label': 'London', 'value': 'London'},
                                     {'label': 'Milan', 'value': 'Milan'},
-                                    {'label': 'Amsterdam', 'value': 'Amsterdam'}
+                                    {'label': 'Paris', 'value': 'Paris'},
+                                    {'label': 'Vienna', 'value': 'Vienna'}
                                 ],
                                 value='Anywhere'
                                             )
@@ -306,10 +324,10 @@ app.layout = html.Div([
                         ])
                     ], className = 'row'),
                        
-                    
-            html.Div([   
-                # Map
-                
+
+    
+# Map
+            html.Div([                   
                 html.Div([
                     dcc.Graph(
                         id='map-graph',
@@ -318,7 +336,9 @@ app.layout = html.Div([
                         config={'displayModeBar': False}
                         )
                 ], className = 'six columns'),
+                
 
+                
 # Table
                 html.Div([
                     dash_table.DataTable(
@@ -375,7 +395,6 @@ app.layout = html.Div([
     
     
 # Positive Review
-    
                 html.Div([
                     html.H5(id='positive-textbox-header', children='Positive Review', style={'text-align': 'center'}),
                     dcc.Textarea(
@@ -400,8 +419,6 @@ app.layout = html.Div([
                     style={'width': '100%', 'fontFamily': 'HelveticaNeue'}
                 )
                     ]),
-    
-    
     
     
     
@@ -458,10 +475,7 @@ app.layout = html.Div([
 
 
 
-
-
 # Callbacks
-
 @app.callback(
     Output('map-graph', 'figure'),
     [Input('location-dropdown', 'value')])
