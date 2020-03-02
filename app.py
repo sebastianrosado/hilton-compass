@@ -307,7 +307,17 @@ app.layout = html.Div([
                     ], className = 'row'),
                        
                     
-            html.Div([                  
+            html.Div([   
+                # Map
+                
+                html.Div([
+                    dcc.Graph(
+                        id='map-graph',
+                        figure=fig2,
+                        style={'height':'60vh', 'width':'100%'},
+                        config={'displayModeBar': False}
+                        )
+                ], className = 'six columns'),
 
 # Table
                 html.Div([
@@ -360,17 +370,6 @@ app.layout = html.Div([
                     ), html.Div(id='datatable-container')
                 ], className='six columns'),
     
-# Map
-                
-                    
-                    html.Div([
-                        dcc.Graph(
-                            id='map-graph',
-                            figure=fig2,
-                            style={'height':'60vh', 'width':'100%'},
-                            config={'displayModeBar': False}
-                        )
-                    ], className = 'six columns'),
             ], className='row'),
     
     
