@@ -57,13 +57,13 @@ city_df = pd.DataFrame(data=city_dict)
 
 # MapBox
 
-mapbox_access_token = 'pk.eyJ1Ijoic2ViYXN0aWFuciIsImEiOiJjazVpNnBnNHIwOWQzM2xzYnNzaXR4bzlnIn0.eZr99XOU5_rYtmZhfLqs6w'
-
 seabass_custom_style = 'mapbox://styles/sebastianr/ck6cxls3p0s2x1imrh5itji2n'
 
 # Map Layout
 
-fig = go.Figure(go.Scattermapbox(
+mapbox_access_token = 'pk.eyJ1Ijoic2ViYXN0aWFuciIsImEiOiJjazVpNnBnNHIwOWQzM2xzYnNzaXR4bzlnIn0.eZr99XOU5_rYtmZhfLqs6w'
+
+fig2 = go.Figure(go.Scattermapbox(
         lat= list(reviews['Lat'].unique()),
         lon= list(reviews['Lon'].unique()),
         mode='markers',
@@ -85,6 +85,22 @@ fig = go.Figure(go.Scattermapbox(
                         "Total Reviews: %{marker.size:,}"
                         "<extra></extra>", # "<extra></extra>" means we don't display the info in the secondary box, such as trace id.
     ))
+    
+fig2.update_layout(
+        hovermode='closest',
+        margin={"r":0,"t":0,"l":0,"b":0},
+        mapbox=go.layout.Mapbox(
+            accesstoken= mapbox_access_token,
+            style = 'light',
+            bearing=0,
+            center=go.layout.mapbox.Center(
+                lat= 48.7329446,
+                lon= 5.0126286
+            ),
+            pitch=0,
+            zoom=2.5
+    )
+)
 
 # Tab styles
 
@@ -260,25 +276,9 @@ app.layout = html.Div([
                                  })
                         ])
                     ], className = 'row'),
-    
-    
-    
-    
+                       
                     
-# Map
-                html.Div([
-                    
-                    html.Div([
-                        dcc.Graph(
-                            id='map-graph',
-                            figure=fig,
-                            style={'height':'60vh', 'width':'100%'},
-                            config={'displayModeBar': False}
-                        )
-                    ], className = 'six columns'),
-                    
-                    
-                                      
+            html.Div([                  
 
 # Table
                 html.Div([
@@ -330,9 +330,19 @@ app.layout = html.Div([
                 }
                     ), html.Div(id='datatable-container')
                 ], className='six columns'),
-        ], className='row'),
     
-    
+# Map
+                
+                    
+                    html.Div([
+                        dcc.Graph(
+                            id='map-graph',
+                            figure=fig2,
+                            style={'height':'60vh', 'width':'100%'},
+                            config={'displayModeBar': False}
+                        )
+                    ], className = 'six columns'),
+            ], className='row'),
     
     
     
@@ -425,38 +435,38 @@ app.layout = html.Div([
 # Callbacks
 
 @app.callback(
-    Output('positive-textbox', 'value'),
-    [Input('datatable', 'derived_virtual_selected_rows')])
-def update_text(derived_virtual_selected_rows):
-    
-    dff = reviews
-    
-    if derived_virtual_selected_rows is None:
-        derived_virtual_selected_rows = []
-    else:
-        return dff['Positive Review'][derived_virtual_selected_rows]
-
-@app.callback(
-    Output('negative-textbox', 'value'),
-    [Input('datatable', 'derived_virtual_selected_rows')])
-def update_text(derived_virtual_selected_rows):
-    
-    dff = reviews
-    
-    if derived_virtual_selected_rows is None:
-        derived_virtual_selected_rows = []
-    else:
-        return dff['Negative Review'][derived_virtual_selected_rows] 
-
-
-@app.callback(
     Output('map-graph', 'figure'),
     [Input('location-dropdown', 'value')])
 def update_map_location(value):
     
     dff = city_df
     
-    fig.update_layout(
+    mapbox_access_token = 'pk.eyJ1Ijoic2ViYXN0aWFuciIsImEiOiJjazVpNnBnNHIwOWQzM2xzYnNzaXR4bzlnIn0.eZr99XOU5_rYtmZhfLqs6w'
+
+    fig2 = go.Figure(go.Scattermapbox(
+        lat= list(reviews['Lat'].unique()),
+        lon= list(reviews['Lon'].unique()),
+        mode='markers',
+        text= hotels,
+        hovertext= ratings,
+        marker=go.scattermapbox.Marker(
+            size= list(value_counts_df['Counts']),
+            sizemin=4,
+            sizeref=13,
+            opacity=0.8,
+            color= list(reduced_df_copy['Average Rating']),
+            cmin=7.0,
+            cmax=9.5,
+            reversescale=True
+#             showscale= True,
+        ),
+         hovertemplate = "<b>%{text}</b><br>" +
+                        "Average Rating: %{hovertext}<br>" +
+                        "Total Reviews: %{marker.size:,}"
+                        "<extra></extra>", # "<extra></extra>" means we don't display the info in the secondary box, such as trace id.
+    ))
+    
+    fig2.update_layout(
         hovermode='closest',
         margin={"r":0,"t":0,"l":0,"b":0},
         mapbox=go.layout.Mapbox(
@@ -474,7 +484,33 @@ def update_map_location(value):
     )
 )
     
-    return fig
+    return fig2
+
+
+@app.callback(
+    Output('positive-textbox', 'value'),
+    [Input('datatable', 'derived_virtual_selected_rows')])
+def update_text(derived_virtual_selected_rows):
+    
+    dff = reviews
+    
+    if derived_virtual_selected_rows is None:
+        derived_virtual_selected_rows = []
+    else:
+        return dff['Positive Review'][derived_virtual_selected_rows]
+    
+
+@app.callback(
+    Output('negative-textbox', 'value'),
+    [Input('datatable', 'derived_virtual_selected_rows')])
+def update_text(derived_virtual_selected_rows):
+    
+    dff = reviews
+    
+    if derived_virtual_selected_rows is None:
+        derived_virtual_selected_rows = []
+    else:
+        return dff['Negative Review'][derived_virtual_selected_rows] 
 
 if __name__ == '__main__':
     app.run_server(debug=False)
