@@ -595,7 +595,21 @@ app.layout = html.Div(
 
 # Callbacks
 @app.callback(Output("map-graph", "figure"), [Input("location-dropdown", "value")])
-def update_map_location(value):
+def update_map_location(value: str):
+    """Move map view to area of selected city.
+
+    Parameters
+    ----------
+    value
+        The city selected from the dropdown menu. If no city is selected ('Anywhere'),
+        the map will move to a default position.
+
+    Returns
+    -------
+    Object
+        Returns map figure with updated parameters.
+
+    """
     dff = city_df
 
     fig2.update_layout(
@@ -628,23 +642,19 @@ def update_map_location(value):
 def update_positive_reviews(derived_virtual_selected_rows):
     """Display selected positive hotel review in the positive review box.
 
-        `PEP 484`_ type annotations are supported. If attribute, parameter, and
-        return types are annotated according to `PEP 484`_, they do not need to be
-        included in the docstring:
+    Parameters
+    ----------
+    derived_virtual_selected_rows : NoneType, list, Series
+        This parameter will switch between NoneType and empty list on page load,
+        with no rows selected. After selecting a row, the parameter will become
+        a Series, where the value is the row index.
 
-        Parameters
-        ----------
-        derived_virtual_selected_rows : NoneType, list, Series
-            This parameter will switch between NoneType and empty list on page load,
-            with no rows selected. After selecting a row, the parameter will become
-            a Series, where the value is the row index.
+    Returns
+    -------
+    Series
+        Series if row selected, None if no row selected
 
-        Returns
-        -------
-        Series
-            Series if row selected, None if no row selected
-
-        """
+    """
     dff = reviews
     if (derived_virtual_selected_rows is None) | (derived_virtual_selected_rows == []):
         return None
@@ -659,23 +669,19 @@ def update_positive_reviews(derived_virtual_selected_rows):
 def update_negative_reviews(derived_virtual_selected_rows):
     """Display selected negative hotel review in the negative review box.
 
-            `PEP 484`_ type annotations are supported. If attribute, parameter, and
-            return types are annotated according to `PEP 484`_, they do not need to be
-            included in the docstring:
+    Parameters
+    ----------
+    derived_virtual_selected_rows : NoneType, list, Series
+        This parameter will switch between NoneType and empty list on page load.
+        After selecting a row, the parameter will become a Series, where the
+        value is the row index.
 
-            Parameters
-            ----------
-            derived_virtual_selected_rows : NoneType, list, Series
-                This parameter will switch between NoneType and empty list on page load.
-                After selecting a row, the parameter will become a Series, where the
-                value is the row index.
+    Returns
+    -------
+    Series
+        Series if row selected, None if no row selected
 
-            Returns
-            -------
-            Series
-                Series if row selected, None if no row selected
-
-            """
+    """
     dff = reviews
     if (derived_virtual_selected_rows is None) | (derived_virtual_selected_rows == []):
         return None
