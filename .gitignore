@@ -3,6 +3,10 @@ test.ipynb
 
 # Virtualenv
 # https://github.com/github/gitignore/blob/master/Global/VirtualEnv.gitignore
+# My adds
+venv/*
+
+# Standard
 .Python
 [Bb]in
 [Ii]nclude
@@ -14,10 +18,15 @@ pyvenv.cfg
 .venv
 pip-selfcheck.json
 
+
+
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+# My adds
+.idea/*
 
+# Standard
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
