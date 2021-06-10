@@ -142,9 +142,9 @@ fig2 = go.Figure(
             reversescale=True,
         ),
         hovertemplate="<b>%{text}</b><br>"
-        + "Average Rating: %{hovertext}<br>"
-        + "Total Reviews: %{marker.size:,}"
-        "<extra></extra>",
+                      + "Average Rating: %{hovertext}<br>"
+                      + "Total Reviews: %{marker.size:,}"
+                        "<extra></extra>",
     )
 )
 
@@ -306,12 +306,12 @@ app.layout = html.Div(
                                 dcc.Markdown(
                                     id="home-2",
                                     children="The first step to increasing profit margins is to understand where you are "
-                                    "underperforming. The second step is to understand why. We can do this with "
-                                    "numerical and written reviews, respectively. On this page, you can explore two "
-                                    "years of compiled reviews that guests from Australia, Canada, New Zealand and "
-                                    "the United States wrote for various Hilton Hotels across Europe. If you want "
-                                    "to read more on why these particular nationalities have been selected, "
-                                    "start on the About tab. Thank you for visiting.",
+                                             "underperforming. The second step is to understand why. We can do this with "
+                                             "numerical and written reviews, respectively. On this page, you can explore two "
+                                             "years of compiled reviews that guests from Australia, Canada, New Zealand and "
+                                             "the United States wrote for various Hilton Hotels across Europe. If you want "
+                                             "to read more on why these particular nationalities have been selected, "
+                                             "start on the About tab. Thank you for visiting.",
                                     style={"font-size": "1.2vw"},
                                 ),
                             ],
@@ -356,7 +356,7 @@ app.layout = html.Div(
                                         html.A(
                                             "here",
                                             href="https://github.com/sebastianrosado/hilton-experimental-design/blob/master/Hilton"
-                                            "%20Experimental%20Design%20Project.ipynb",
+                                                 "%20Experimental%20Design%20Project.ipynb",
                                             target="_blank",
                                         ),
                                         ".",
@@ -442,7 +442,7 @@ app.layout = html.Div(
                             data=df_copy.to_dict("records"),
                             fixed_rows={"headers": False, "data": 0},
                             row_selectable="single",
-                            selected_rows=[],
+                            derived_virtual_selected_rows=[],
                             sort_action="native",
                             sort_mode="multi",
                             style_cell_conditional=[
@@ -574,7 +574,7 @@ app.layout = html.Div(
                         html.A(
                             "GitHub",
                             href="https://github.com/sebastianrosado/hilton-experimental-design/blob"
-                            "/master/Hilton%20Experimental%20Design%20Project.ipynb",
+                                 "/master/Hilton%20Experimental%20Design%20Project.ipynb",
                             target="_blank",
                         ),
                         " | Developed by ",
@@ -642,6 +642,10 @@ def update_map_location(value: str):
 def update_positive_reviews(derived_virtual_selected_rows):
     """Display selected positive hotel review in the positive review box.
 
+        derived_virtual_selected_rows will switch between NoneType and an
+        empty list on page load. Since both of these are falsy values in
+         Python, a simply 'if not' condition can address this case.
+
     Parameters
     ----------
     derived_virtual_selected_rows : NoneType, list, Series
@@ -656,10 +660,7 @@ def update_positive_reviews(derived_virtual_selected_rows):
 
     """
     dff = reviews
-    if (derived_virtual_selected_rows is None) | (derived_virtual_selected_rows == []):
-        return None
-    else:
-        return dff["Positive Review"][derived_virtual_selected_rows].values[0]
+    return None if not derived_virtual_selected_rows else dff["Positive Review"][derived_virtual_selected_rows].values[0]
 
 
 @app.callback(
@@ -669,10 +670,13 @@ def update_positive_reviews(derived_virtual_selected_rows):
 def update_negative_reviews(derived_virtual_selected_rows):
     """Display selected negative hotel review in the negative review box.
 
+       After selecting a row, the parameter will become a Series, where the
+        value is the row index.
+
+
     Parameters
     ----------
     derived_virtual_selected_rows : NoneType, list, Series
-        This parameter will switch between NoneType and empty list on page load.
         After selecting a row, the parameter will become a Series, where the
         value is the row index.
 
@@ -683,10 +687,7 @@ def update_negative_reviews(derived_virtual_selected_rows):
 
     """
     dff = reviews
-    if (derived_virtual_selected_rows is None) | (derived_virtual_selected_rows == []):
-        return None
-    else:
-        return dff["Negative Review"][derived_virtual_selected_rows].values[0]
+    return None if not derived_virtual_selected_rows else dff["Negative Review"][derived_virtual_selected_rows].values[0]
 
 
 if __name__ == "__main__":
