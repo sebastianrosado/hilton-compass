@@ -667,7 +667,7 @@ def update_positive_reviews(derived_virtual_selected_rows: int) -> Optional[Any]
     [Input("datatable", "derived_virtual_selected_rows")],
 )
 def update_negative_reviews(derived_virtual_selected_rows: int) -> Optional[Any]:
-    """Display selected positive hotel review in the positive review box.
+    """Display selected negative hotel review in the negative review box.
 
     Parameters
     ----------
