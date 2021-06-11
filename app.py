@@ -1,12 +1,13 @@
-import os
+import os  # type: ignore
+from typing import Any, Optional
 
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_table
-import pandas as pd
-import plotly.graph_objects as go
-from dash.dependencies import Input, Output
+import dash  # type: ignore
+import dash_core_components as dcc  # type: ignore
+import dash_html_components as html  # type: ignore
+import dash_table  # type: ignore
+import pandas as pd  # type: ignore
+import plotly.graph_objects as go  # type: ignore
+from dash.dependencies import Input, Output  # type: ignore
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -442,7 +443,7 @@ app.layout = html.Div(
                             data=df_copy.to_dict("records"),
                             fixed_rows={"headers": False, "data": 0},
                             row_selectable="single",
-                            selected_rows=[],
+                            derived_virtual_selected_rows=None,
                             sort_action="native",
                             sort_mode="multi",
                             style_cell_conditional=[
@@ -639,54 +640,52 @@ def update_map_location(value: str):
     Output("positive-textbox", "value"),
     [Input("datatable", "derived_virtual_selected_rows")],
 )
-def update_positive_reviews(derived_virtual_selected_rows):
+def update_positive_reviews(derived_virtual_selected_rows: int) -> Optional[Any]:
     """Display selected positive hotel review in the positive review box.
 
     Parameters
     ----------
-    derived_virtual_selected_rows : NoneType, list, Series
-        This parameter will switch between NoneType and empty list on page load,
-        with no rows selected. After selecting a row, the parameter will become
-        a Series, where the value is the row index.
+    derived_virtual_selected_rows
+        Index value for the row you want to display in the review box.
+        This parameter is NoneType with no rows selected.
 
     Returns
     -------
-    Series
-        Series if row selected, None if no row selected
+    None, String
 
     """
     dff = reviews
-    if (derived_virtual_selected_rows is None) | (derived_virtual_selected_rows == []):
-        return None
-    else:
-        return dff["Positive Review"][derived_virtual_selected_rows].values[0]
+    return (
+        None
+        if not derived_virtual_selected_rows
+        else dff["Positive Review"][derived_virtual_selected_rows]
+    )
 
 
 @app.callback(
     Output("negative-textbox", "value"),
     [Input("datatable", "derived_virtual_selected_rows")],
 )
-def update_negative_reviews(derived_virtual_selected_rows):
-    """Display selected negative hotel review in the negative review box.
+def update_negative_reviews(derived_virtual_selected_rows: int) -> Optional[Any]:
+    """Display selected positive hotel review in the positive review box.
 
     Parameters
     ----------
-    derived_virtual_selected_rows : NoneType, list, Series
-        This parameter will switch between NoneType and empty list on page load.
-        After selecting a row, the parameter will become a Series, where the
-        value is the row index.
+    derived_virtual_selected_rows
+        Index value for the row you want to display in the review box.
+        This parameter is NoneType with no rows selected.
 
     Returns
     -------
-    Series
-        Series if row selected, None if no row selected
+    None, String
 
     """
     dff = reviews
-    if (derived_virtual_selected_rows is None) | (derived_virtual_selected_rows == []):
-        return None
-    else:
-        return dff["Negative Review"][derived_virtual_selected_rows].values[0]
+    return (
+        None
+        if not derived_virtual_selected_rows
+        else dff["Negative Review"][derived_virtual_selected_rows]
+    )
 
 
 if __name__ == "__main__":
