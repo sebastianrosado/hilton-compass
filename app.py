@@ -64,7 +64,7 @@ reviews = reviews[
         "lng",
     ]
 ]
-
+# Some comment
 reviews.rename(
     columns={
         "hotel_name": "Hotel",
